@@ -22,6 +22,25 @@ int InitList(s_linklist* L)       //初始化头节点
 	return 0;
 }
 
+void CreateListHead(s_linklist* L)      ////头插入法创建单链表，n为元素个数
+{
+	int i, n;
+	s_linklist p, r;
+	(*L) = (s_linklist)malloc(sizeof(s_node));
+	r = NULL;
+	printf("请输入要插入元素个数:");
+	scanf_s("%d", &n);
+	printf("请输入要插入的元素值（用空格隔开）：\n");
+	for (i = 0; i < n; i++)
+	{
+		p = (s_linklist)malloc(sizeof(s_node));
+		scanf_s("%d", &p->data);
+		p->next = r;
+		r = p;
+	}
+	(*L)->next = r;
+}
+
 void CreateListTail(s_linklist* L)       //尾插入法创建单链表，n为元素个数
 {
 	int i, n;
