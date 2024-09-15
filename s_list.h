@@ -110,20 +110,21 @@ int GetElem(s_linklist* L, int n, elemtype* e)                 //查找第n个�
 	return 0;
 }
 
-int LocateElem(s_linklist* L, int n)                            //查找元素n，并返回该元素的位置（未查到则返回0）
+int LocateElem(s_linklist* L, elemtype e)      //查找元素n，并返回该元素的位置（未查到则返回0）
 {
 	int i = 1;
 	s_linklist p = (*L)->next;
-	while (p != NULL && p->data != n)
+	while (p->next!= NULL && p->data != e)
 	{
 		p = p->next;
 		++i;
 	}
-	if (p == NULL && p->data != n)
+	if (p->data != e)
 	{
 		printf("无法找到该元素！");
 		return 0;
 	}
+	printf("查找到该元素在第%d位",i);
 	return i;
 }
 
