@@ -3,7 +3,7 @@
 #include<stdlib.h>
 
 typedef int elemtype;
-typedef struct s_node
+typedef struct _s_node
 {
 	elemtype data;
 	struct s_node* next;
