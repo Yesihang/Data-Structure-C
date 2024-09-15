@@ -8,7 +8,7 @@ typedef struct _s_node
 	elemtype data;
 	struct s_node* next;
 }s_node;
-typedef struct s_node* s_linklist;
+typedef s_node* s_linklist;
 
 int InitList(s_linklist* L)       //初始化头节点
 {
