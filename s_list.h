@@ -6,7 +6,7 @@ typedef int elemtype;
 typedef struct s_node
 {
 	elemtype data;
-	struct node* next;
+	struct s_node* next;
 }s_node;
 typedef struct s_node* linklist;
 
