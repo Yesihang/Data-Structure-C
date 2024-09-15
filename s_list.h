@@ -3,16 +3,16 @@
 #include<stdlib.h>
 
 typedef int elemtype;
-typedef struct node
+typedef struct s_node
 {
 	elemtype data;
 	struct node* next;
-}node;
-typedef struct node* linklist;
+}s_node;
+typedef struct s_node* linklist;
 
 int InitList(linklist* L)       //初始化头节点
 {
-	(*L) = (linklist)malloc(sizeof(node));
+	(*L) = (linklist)malloc(sizeof(s_node));
 	if (!L)
 	{
 		printf("内存分配失败！\n");
@@ -26,14 +26,14 @@ void CreateListTail(linklist* L)       //尾插入法创建单链表，n为元�
 {
 	int i, n;
 	linklist p, r;
-	(*L)=(linklist)malloc(sizeof(node));
+	(*L)=(linklist)malloc(sizeof(s_node));
 	r = (*L);
 	printf("请输入要插入元素个数:");
 	scanf_s("%d", &n);
 	printf("请输入要插入的元素值（用空格隔开）：\n");
 	for (i = 0; i < n; i++)
 	{
-		p = (linklist)malloc(sizeof(node));
+		p = (linklist)malloc(sizeof(s_node));
 		scanf_s("%d", &p->data);
 		r->next = p;
 		r = p;
@@ -86,7 +86,7 @@ int InsertList(linklist* L, int n, elemtype e)      //在第n个位置插入元�
 		printf("插入元素失败！\n");
 		return 0;
 	}
-	j = (linklist)malloc(sizeof(node));
+	j = (linklist)malloc(sizeof(s_node));
 	j->data = e;
 	j->next = p->next;
 	p->next = j;
