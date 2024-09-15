@@ -1,18 +1,19 @@
+#pragma once
 #include<stdio.h>
 #include<stdlib.h>
 
 typedef int elemtype;
 typedef struct node
-{   
+{
 	elemtype data;
 	struct node* next;
 }node;
 typedef struct node* linklist;
 
-int InitList(linklist *L)       //初始化头节点
+int InitList(linklist* L)       //初始化头节点
 {
 	(*L) = (linklist)malloc(sizeof(node));
-	if (!L) 
+	if (!L)
 	{
 		printf("内存分配失败！\n");
 		exit(0);
@@ -23,13 +24,13 @@ int InitList(linklist *L)       //初始化头节点
 
 void CreateListTail(linklist* L)       //尾插入法创建单链表，n为元素个数
 {
-	int i,n;
-	linklist p,r;
-	(*L) = (linklist)malloc(sizeof(node));
-	r = *L;
+	int i, n;
+	linklist p, r;
+	(*L)=(linklist)malloc(sizeof(node));
+	r = (*L);
 	printf("请输入要插入元素个数:");
 	scanf_s("%d", &n);
-	printf("请输入要插入的元素值（用空格隔开）：");
+	printf("请输入要插入的元素值（用空格隔开）：\n");
 	for (i = 0; i < n; i++)
 	{
 		p = (linklist)malloc(sizeof(node));
@@ -40,19 +41,19 @@ void CreateListTail(linklist* L)       //尾插入法创建单链表，n为元�
 	r->next = NULL;
 }
 
-int Lengthlist(linklist* L)     //计算链表长度
+int LengthList(linklist* L)     //计算链表长度
 {
-	int n=0;
+	int n = 0;
 	linklist p = (*L)->next;
-	while (p)
+	while (p!=NULL)
 	{
 		p = p->next;
-		n+=1;
+		n += 1;
 	}
 	return n;
 }
 
-int GetElem(linklist* L, int n, elemtype *e)      //查找第n个元素并将元素值返回给e
+int GetElem(linklist* L, int n, elemtype* e)      //查找第n个元素并将元素值返回给e
 {
 	int i = 1;
 	linklist p = (*L)->next;
@@ -72,7 +73,7 @@ int GetElem(linklist* L, int n, elemtype *e)      //查找第n个元素并将元
 
 int InsertList(linklist* L, int n, elemtype e)      //在第n个位置插入元素e
 {
-	int i=1;
+	int i = 1;
 	linklist p = (*L);
 	linklist j;
 	while (p && i < n)
@@ -125,26 +126,21 @@ int ClearList(linklist* L)					//单链表的整表删除
 		free(p);
 		p = j;
 	}
-	(*L)->next =NULL;
+	(*L)->next = NULL;
 	return 0;
 }
 
 void ShowList(linklist* L)					//打印整个链表
 {
-	linklist p=(*L)->next;
-	if (p = NULL)
+	linklist p = (*L)->next;
+	if (p == NULL)
 		printf("这是一个空链表!\n");
 	else
 		printf("单链表：");
 	while (p)
 	{
-		printf("->%d", &(p->data));
+		printf("->%d", p->data);
 		p = p->next;
 	}
 	printf("\n");
-}
-
-int main()
-{
-	return 0;
 }
