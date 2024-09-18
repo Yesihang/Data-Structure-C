@@ -1,6 +1,5 @@
 #pragma once
 #include<stdio.h>
-#include<stdio.h>
 #define MAX 40
 typedef int elemtype;
 typedef struct {
