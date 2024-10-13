@@ -1,0 +1,66 @@
+//---------------------------最短路径（迪杰斯特拉算法）-----------------------------------------
+//----数据结构
+#define NUM 20
+#define INFINITY 65535
+
+typedef int elemtype;
+typedef struct {
+	elemtype vertex[NUM];
+	int arc[NUM][NUM];
+	int numnode, numedge; //顶点数，边数
+}AMgraph;
+
+typedef int Patharc[NUM];
+typedef int PathTable[NUM];
+
+//算法代码
+void ShortestPath(AMgraph G, int v0,Patharc* P, PathTable* D)
+{
+	int final[NUM];
+	int i, j, h, min;
+
+	for (i = 0; i < NUM;i++)
+	{
+		final[i] = 0;
+		(*P)[i] = -1;
+		(*D)[i] = G.arc[v0][i];
+	}
+	(*D)[v0] = 0;
+	final[v0] = 1;
+
+	for (i = 1; i < G.numnode; i++)
+	{
+		min = INFINITY;
+		for (j = 0; j < G.numnode; j++)
+		{
+			if ((*D)[j] < min&&final[j] != 1)
+			{
+				min = (*D)[j];
+				h = j;
+			}
+		}
+		final[h] = 1;
+		for (j = 0; j < G.numnode; j++)
+		{
+			if (final[j] != 1&&(min + G.arc[h][j]) < (*D)[j])
+			{
+				(*D)[j] = (min + G.arc[h][j]);
+				(*P)[j] = h;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
