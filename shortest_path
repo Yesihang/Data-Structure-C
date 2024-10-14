@@ -1,4 +1,5 @@
-//---------------------------最短路径（迪杰斯特拉算法）-----------------------------------------
+//---------------------------最短路径-----------------------------------------
+
 //----数据结构
 #define NUM 20
 #define INFINITY 65535
@@ -10,11 +11,13 @@ typedef struct {
 	int numnode, numedge; //顶点数，边数
 }AMgraph;
 
+
+
+//----算法代码（迪杰斯特拉算法）-----------------------------
 typedef int Patharc[NUM];
 typedef int PathTable[NUM];
 
-//算法代码
-void ShortestPath(AMgraph G, int v0,Patharc* P, PathTable* D)
+void ShortestPath_Dijkstra(AMgraph G, int v0,Patharc* P, PathTable* D)
 {
 	int final[NUM];
 	int i, j, h, min;
@@ -51,9 +54,52 @@ void ShortestPath(AMgraph G, int v0,Patharc* P, PathTable* D)
 	}
 }
 
+//----算法代码（弗洛伊德算法）-----------------------------
+typedef int Patharc[NUM][NUM];
+typedef int PathTable[NUM][NUM];
 
+void ShortestPath_Floyd(AMgraph G, Patharc* P, PathTable* D)
+{
+	int v, w, k;
+	for(v=0;v<G.numnode;++v)
+		for (w = 0; v < G.numnode; ++v)
+		{
+			(*P)[v][w] = w;
+			(*D)[v][w] = G.arc[v][w];
+		}
+	for (k = 0; k < G.numnode; ++k)
+		for (v = 0; v < G.numnode; ++v)
+			for (w = 0; w < G.numnode; ++w)
+			{
+				if ((*D)[v][w] > (*D)[v][k] + (*D)[k][w])
+				{
+					(*D)[v][w] = (*D)[v][k] + (*D)[k][w];
+					(*P)[v][w] = (*P)[v][k];
+				}
+			}
+}
 
-
+//----打印各顶点间最短路径
+void PrintShortestPath(AMgraph G, Patharc* P, PathTable* D)
+{
+	int v, w,k;
+	for (v = 0; v < G.numnode; ++v)
+	{
+		for (w = 0; w < G.numnode; ++w)
+		{
+			printf("v%d-v%d weight %d", v, w, (*D)[v][w]);
+			k = (*P)[v][w];
+			printf("Path:%d", v);
+			while (k != w)
+			{
+				printf(" -> %d", k);
+				k = (*D)[k][w];
+			}
+			printf(" -> %d\n", w);
+		}
+		printf("\n");
+	}
+}
 
 
 
