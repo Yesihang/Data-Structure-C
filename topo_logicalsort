@@ -1,0 +1,53 @@
+----数据结构---------------------------------------
+#define NUM 20
+typedef struct edgenode
+{
+	int adjvex;
+	int weight;
+	struct edgenode* next;
+}Edgenode;
+
+typedef struct vertexnode
+{
+	int in;
+	int date;
+	Edgenode* firstedge;
+}Vertexnode, Adjlist[NUM];
+
+typedef struct {
+	Adjlist adjlist;
+	int numvertexs, numedges;
+}adjlistGraph, * adjlistgraph;
+
+
+----拓扑排序算法实现--------------------------------
+int TopologicalSort(adjlistgraph G)
+{
+	Edgenode* e;
+	int i, k, gettop;
+	int top = 0;
+	int count = 0;
+	int* stack;
+	stack = (int*)malloc(G->numvertexs * sizeof(int));
+
+	for (i = 0; i < G->numvertexs; i++)
+		if (G->adjlist[i].in == 0)
+			stack[++top] = i;
+	
+	while (top != 0)
+	{
+		gettop = stack[top--];
+		printf("%d -> ", G->adjlist[gettop].date);
+		count++;
+		for (e = G->adjlist[gettop].firstedge; e; e = e->next)
+		{
+			k = e->adjvex;
+			if ((--G->adjlist[e->adjvex].in) == 0)
+				stack[++top] = k;
+		}
+	}
+	if (count < G->numvertexs)
+		return 0;
+	else
+		return 1;
+}
