@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define NUM 20
+
+int* etv, *ltv;
+int* stack2;
+int top2;
+
+typedef struct edgenode
+{
+	int adjvex;
+	int weight;
+	struct edgenode* next;
+}Edgenode;
+
+typedef struct vertexnode
+{
+	int in;
+	int date;
+	Edgenode* firstedge;
+}Vertexnode, Adjlist[NUM];
+
+typedef struct {
+	Adjlist adjlist;
+	int numvertexs, numedges;
+}adjlistGraph, * adjlistgraph;
+
+
+
+int TopologicalSort(adjlistgraph G)
+{
+	Edgenode* e;
+	int i, k, gettop;
+	int top = 0;
+	int count = 0;
+	int* stack;
+	stack = (int*)malloc(G->numvertexs * sizeof(int));
+
+	for (i = 0; i < G->numvertexs; i++)
+		if (G->adjlist[i].in == 0)
+			stack[++top] = i;
+
+	top2 = 0;
+	etv = (int*)malloc(G->numvertexs * sizeof(int));
+	for(i=0;i<G->numvertexs;i++)
+		etv[i] = 0;
+	stack2 = (int*)malloc(G->numvertexs * sizeof(int));
+
+	while (top != 0)
+	{
+		gettop = stack[top--];
+		stack2[++top2] = gettop;
+		count++;
+		for (e = G->adjlist[gettop].firstedge; e; e = e->next)
+		{
+			k = e->adjvex;
+			if ((--G->adjlist[e->adjvex].in) == 0)
+				stack[++top] = k;
+			if (etv[gettop] + e->weight > etv[k])
+				etv[k] = etv[gettop] + e->weight;
+		}
+	}
+	if (count < G->numvertexs)
+		return 0;
+	else
+		return 1;
+}
+
+void CriticalPath(adjlistgraph G)
+{
+	Edgenode* e;
+	int ete, lte;
+	int gettop, i, k, j;
+
+	for (i = 0; i < G->numvertexs; i++)
+		ltv[i] = etv[G->numvertexs-1];
+	while (top2 != 0)
+	{
+		gettop = stack2[top2--];
+		for (e = G->adjlist[gettop].firstedge; e; e = e->next)
+		{
+			k = e->adjvex;
+			if (ltv[k] - e->weight < ltv[gettop])
+				ltv[gettop] = ltv[k] - e->weight;
+		}
+	}
+	for (j = 0; j < G->numvertexs; j++)
+	{
+		for (e = G->adjlist[j].firstedge; e; e = e->next)
+		{
+			k = e->adjvex;
+			ete = etv[j];
+			lte = ltv[k] - e->weight;
+			if (ete == lte)
+				printf("<%d - %d> legnth:%d \n", G->adjlist[j].date, G->adjlist[k].date, e->weight);
+		}
+	}
+}
