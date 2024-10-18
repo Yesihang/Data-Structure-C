@@ -20,4 +20,4 @@
    - 5.3最小生成树的实现(min_s_tree.h)
    - 5.4最短路径(shortest_path)
    - 5.5拓扑排序(topo_logicalsort)
-   - 5.6关键路径(circital_path)
+   - 5.6关键路径(cirtical_path)
