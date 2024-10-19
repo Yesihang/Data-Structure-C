@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef enum{true=1,false=0}bool;
+
+//----数据结构
+typedef struct BiTNode
+{
+	int date;
+	struct BiTNode* lchild, * rchild;
+}BiTNode,*BiTree;
+
+//----二叉排序树查找算法
+bool SearchBST(BiTree T, int key, BiTree* p, BiTree f)
+{
+	if (!T)
+	{
+		(*p) = f;
+		return false;
+	}
+	else if (key == T->date)
+	{
+		(*p) = T;
+		return true;
+	}
+	else if (key < T->date)
+		SearchBST(T->lchild, key, p, T);
+	else
+		SearchBST(T->rchild, key, p, T);
+}
+
+//----插入
+bool InsertBST(BiTree *T, int key)
+{
+	BiTree p, s;
+	if (!SearchBST(*T, key, &p, NULL))
+	{
+		s = (BiTree)malloc(sizeof(BiTNode));
+		s->date = key;
+		s->lchild = s->rchild = NULL;
+
+		if (!p)
+			*T = s;
+		else if (key < p->date)
+			p->lchild = s;
+		else
+			p->rchild = s;
+
+		return true;
+	}
+	else
+		return false;
+}
+
+//----删除
+bool DeleteBST(BiTree* T, int key)
+{
+	if (!*T)
+		return false;
+	else
+	{
+		if ((*T)->date == key)
+			Delete(T);
+		else if (key < (*T)->date)
+			return DeleteBST(&(*T)->lchild, key);
+		else
+			return DeleteBST(&(*T)->rchild, key);
+	}
+}
+
+bool Delete(BiTree* T)
+{
+	BiTree q, s;
+	if ((*T)->rchild==NULL)
+	{
+		s = (*T); *T = (*T)->lchild; free(s);
+	}
+	else if ((*T)->lchild == NULL)
+	{
+		s = (*T); *T = (*T)->rchild; free(s);
+	}
+	else
+	{
+		q = (*T);
+		s = (*T)->lchild; 
+		while (s->rchild)
+		{
+			q = s;
+			s = s->rchild;
+		}
+		(*T)->date = s->date;
+		if (q != (*T))
+			q->rchild = s->lchild;
+		else
+			q->lchild = s->lchild;
+		free(s);
+	}
+	return true;
+}
