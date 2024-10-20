@@ -15,6 +15,7 @@
   - 4.1二叉树遍历的实现(binart_tree.h)
   - 4.2二叉树线索化实现(thr_bin_tree.h)
   - 4.3二叉排序树(binary_sort_tree)
+  - 4.4平衡二叉树(balanced_binary_tree)
 - 5.图
    - 5.1邻接矩阵实现(mat_graph.h)
    - 5.2邻接表实现(link_graph.h)
