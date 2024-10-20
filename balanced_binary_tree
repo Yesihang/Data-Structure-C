@@ -1,0 +1,160 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define LH 1
+#define EH 0
+#define RH -1
+typedef enum{true=1,false=0}bool;
+
+
+typedef struct BiTNode
+{
+	int date;
+	int bf;
+	struct BiTNode* lchild, * rchild;
+}BiTNode,*BiTree;
+
+//--------右旋操作
+void R_Rotate(BiTree* T)
+{
+	BiTree R;
+	R = (*T)->lchild;
+	(*T)->lchild = R->rchild;
+	R->rchild = (*T);
+	(*T) = R;
+}
+
+//--------左旋操作
+void L_Rotate(BiTree* T)
+{
+	BiTree L;
+	L = (*T)->rchild;
+	(*T)->rchild = L->lchild;
+	L->lchild = (*T);
+	(*T) = L;
+}
+
+//--------左平衡旋转处理
+void LeftBalance(BiTree* T)
+{
+	BiTree L, Lr;
+	L = (*T)->lchild;
+	switch (L->bf)
+	{
+	    case LH:
+		    (*T)->bf = L->bf = EH;
+		    R_Rotate(T);
+			break;
+	    case RH:
+			Lr = L->rchild;
+			switch(Lr->bf)
+			{
+			    case LH:
+					(*T)->bf = RH;L->bf = EH;
+					break;
+			    case EH:
+					(*T)->bf = L->bf = EH;
+					break;
+			    case RH:
+					L->bf = LH;(*T)->bf = EH;
+					break;
+			}
+			Lr->bf = EH;
+			L_Rotate(&(*T)->lchild);
+			R_Rotate(T);
+	}
+}
+
+//--------右平衡旋转处理
+void RightBalance(BiTree* T)
+{
+	BiTree R, Rl;
+	R = (*T)->rchild;
+	switch (R->bf)
+	{
+	case RH:
+		(*T)->bf = R->bf = EH;
+		R_Rotate(T);
+		break;
+	case LH:
+		Rl = R->lchild;
+		switch (Rl->bf)
+		{
+		case RH:
+			(*T)->bf = LH;R->bf = EH;
+			break;
+		case EH:
+			(*T)->bf = R->bf = EH;
+			break;
+		case LH:
+			R->bf = RH;(*T)->bf = EH;
+			break;
+		}
+		Rl->bf = EH;
+		L_Rotate(&(*T)->rchild);
+		R_Rotate(T);
+	}
+}
+
+//--------AVL树插入操作
+bool InsertAVL(BiTree* T, int e, bool* taller)
+{
+	if (!(*T))
+	{
+		*T = (BiTree)malloc(sizeof(BiTNode));
+		(*T)->date = e;
+		(*T)->bf = EH;
+		(*T)->lchild = (*T)->rchild = NULL;
+		*taller = true;
+	}
+	else 
+	{
+		if ((*T)->date == e)
+		{
+			*taller = false;
+			return false;
+		}
+
+		if ((*T)->date > e)
+		{
+			if (!TnsertAVL(&(*T)->lchild, e, taller))
+				return false;
+			if (*taller)
+			{
+				switch ((*T)->bf)
+				{
+				case LH:
+					LeftBalance(T); *taller = false;
+					break;
+				case EH:
+					(*T)->bf = LH; *taller = true;
+					break;
+				case RH:
+					(*T)->bf = EH; *taller = false;
+					break;
+				}
+			}
+		}
+		else
+		{
+			if (!TnsertAVL(&(*T)->rchild, e, taller))
+				return false;
+			if (*taller)
+			{
+				switch ((*T)->bf)
+				{
+				case LH:
+					(*T)->bf=EH; *taller = false;
+					break;
+				case EH:
+					(*T)->bf = RH; *taller = true;
+					break;
+				case RH:
+					RightBalance(T); *taller = false;
+					break;
+				}
+			}
+		}
+	}
+	return true;
+}
